@@ -28,4 +28,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * [OpenPostcode](http://www.openpostcode.org/) - Original Algorithm
-* [libgeohash36](https://github.com/rafamdr/libgeohash36) - libgeohash36 by git
+* [libgeohash36](https://github.com/rafamdr/libgeohash36) - libgeohash36 by Rafael Ribeiro.
