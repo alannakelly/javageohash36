@@ -24,8 +24,7 @@ public class GeoHash36 {
       'R', 't', 'T', 'V', 'W', 'X'
     };
 
-  static final ByteBuffer base36_inverse_hash = ByteBuffer.wrap(
-    new byte[]{
+  static final byte[] base36_inverse_hash = new byte[]{
       (byte) 0x91, (byte) 0x15, (byte) 0xFF, (byte) 0xFF,
       (byte) 0x93, (byte) 0x18, (byte) 0x14, (byte) 0x00,
       (byte) 0x16, (byte) 0x00, (byte) 0x97, (byte) 0x1B,
@@ -44,7 +43,7 @@ public class GeoHash36 {
       (byte) 0x09, (byte) 0x00, (byte) 0x8A, (byte) 0x0E,
       (byte) 0x8C, (byte) 0x10, (byte) 0xFF, (byte) 0xFF,
       (byte) 0x8D, (byte) 0x12, (byte) 0x0F, (byte) 0x00
-    });
+    };
 
   private static int fastPow(int base_, int exp_) {
     if (exp_ == 0) {
@@ -60,45 +59,33 @@ public class GeoHash36 {
     return output;
   }
 
-  private static Pair<Integer, Integer> charToIndexes(char c_) {
-    for (int i = 0; i < GEOHASH_MATRIX_SIDE; i++) {
-      for (int j = 0; j < GEOHASH_MATRIX_SIDE; j++) {
-        if (c_ == base36[(i * GEOHASH_MATRIX_SIDE) + j]) {
-          return new Pair<>(i, j);
-        }
-      }
-    }
-    return null; //TODO: Exception
-
-    //TODO: Port the faster algorithm to Java
-/*
+ private static Pair<Integer, Integer> charToIndexes(char c_) {
     int possible_index = c_ % 36;
 
-    hash_node_t * node_ptr = (hash_node_t *)(base36_inverse_hash + (possible_index << 1));
+    final int node_ptr = possible_index << 1;
+    byte value = base36_inverse_hash[node_ptr];
+    int curr = value & 0x7f;
+    final int next = value & 0x80;
 
-    if (node_ptr->value != 0xFF)
-    {
-      char temp = *(((char*)base36) + node_ptr->info.curr);
+    if (value != 0xFF) {
+      char temp = base36[curr];
 
-      if (temp == c_)
-      {
-        (*line_) = node_ptr->info.curr / GEOHASH_MATRIX_SIDE;
-        (*col_) = node_ptr->info.curr % GEOHASH_MATRIX_SIDE;
-      }
-      else if(node_ptr->info.next)
-      {
-        node_ptr++;
-        temp = *(((char*)base36) + node_ptr->info.curr);
+      if (temp == c_) {
+        return new Pair<>(curr / GEOHASH_MATRIX_SIDE,
+          curr % GEOHASH_MATRIX_SIDE);
+      } else if (next > 0) {
+        value = base36_inverse_hash[node_ptr + 1];
+        curr = (value & 0x7f);
+        temp = base36[curr];
 
-        if (temp == c_)
-        {
-          (*line_) = node_ptr->info.curr / GEOHASH_MATRIX_SIDE;
-          (*col_) = node_ptr->info.curr % GEOHASH_MATRIX_SIDE;
+        if (temp == c_) {
+          return new Pair<>(curr / GEOHASH_MATRIX_SIDE,
+            curr % GEOHASH_MATRIX_SIDE);
         }
       }
     }
 
- */
+    return null; //TODO: Throw exception instead of returning null.
   }
 
   /**
