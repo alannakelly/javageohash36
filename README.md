@@ -6,10 +6,12 @@ Pure Java Implementation of Geohash36, directly ported from https://github.com/r
 
 Refer to Demo.java for some examples.
 
+The main class is GeoHash36 and 
+
 ### Prerequisites
 
-Gradle
-Java JDK 8 or higher
+* Gradle
+* Java JDK 8 or higher
 
 ## Built With
 

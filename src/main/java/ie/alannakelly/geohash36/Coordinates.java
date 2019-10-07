@@ -12,75 +12,83 @@ package ie.alannakelly.geohash36;
  */
 public class Coordinates {
 
-    /**
-     * Epsilon to use for floating point compare.
-     */
-    private static final double EPSILON = 0.000001;
+  /**
+   * Epsilon to use for floating point compare.
+   */
+  private static final double EPSILON = 0.000001;
 
-    private final double latitude;
-    private final double longitude;
+  private final double latitude;
+  private final double longitude;
 
-    /**
-     * Double comparison utility method.
-     *
-     * @param a
-     * @param b
-     * @param epsilon
-     * @return
-     */
-    private static boolean almostEqual(final double a, final double b, final double epsilon) {
-        final double absA = Math.abs(a);
-        final double absB = Math.abs(b);
-        final double diff = Math.abs(a - b);
+  /**
+   * Double comparison utility method. Based on information at
+   * https://floating-point-gui.de/errors/comparison/
+   *
+   * @param a - first double
+   * @param b - second double
+   * @param epsilon - minimum difference to consider numbers almost equal
+   * @return true if a & b are equal or almost equal.
+   */
+  private static boolean almostEqual(final double a, final double b,
+    final double epsilon) {
+    final double absA = Math.abs(a);
+    final double absB = Math.abs(b);
+    final double diff = Math.abs(a - b);
 
-        if(a==b) {
-            return true;
-        } else if(a == 0 || b == 0 || (absA + absB < Double.MIN_NORMAL)) {
-            return diff < (epsilon * Double.MIN_NORMAL);
-        } else {
-            return diff / Math.min(absA + absB, Double.MAX_VALUE) < epsilon;
-        }
+    if (a == b) {
+      return true;
+    } else if (a == 0 || b == 0 || (absA + absB < Double.MIN_NORMAL)) {
+      return diff < (epsilon * Double.MIN_NORMAL);
+    } else {
+      return diff / Math.min(absA + absB, Double.MAX_VALUE) < epsilon;
     }
+  }
 
-    /**
-     * Creates an instance of Coordinates given a longitude and latitude.
-     *
-     * @param latitude
-     * @param longitude
-     * @return An instance of Coordinates.
-     */
-    public static Coordinates createCoordinates(final double latitude, final double longitude) {
-        //TODO: Add range checking.
-        return new Coordinates(latitude, longitude);
+  /**
+   * Creates an instance of Coordinates given a longitude and latitude.
+   *
+   * @param latitude  - a latitude in the range -90.0 to 90.0.
+   * @param longitude - a longitude in the range -180.0 to 180.0.
+   * @return An instance of @{@link Coordinates}.
+   * @throws IllegalArgumentException if latitude or longitude are out
+   *                of range.
+   */
+  public static Coordinates createCoordinates(final double latitude,
+    final double longitude) {
+    if ((latitude < -90.0 && latitude > 90.0) ||
+      (longitude < -180.0 && latitude > 180.0)) {
+      throw new IllegalArgumentException("Invalid latitude or longitude.");
     }
+    return new Coordinates(latitude, longitude);
+  }
 
-    private Coordinates(final double latitude_, final double longitude_ ) {
-        latitude = latitude_;
-        longitude = longitude_;
-    }
+  private Coordinates(final double latitude_, final double longitude_) {
+    latitude = latitude_;
+    longitude = longitude_;
+  }
 
-    public double getLatitude() {
-        return latitude;
-    }
+  public double getLatitude() {
+    return latitude;
+  }
 
-    public double getLongitude() {
-        return longitude;
-    }
+  public double getLongitude() {
+    return longitude;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof Coordinates) {
-            Coordinates coord = (Coordinates)obj;
-            if( almostEqual(this.getLatitude(), coord.getLatitude(), EPSILON) &&
-              almostEqual(this.getLongitude(), coord.getLongitude(), EPSILON)) {
-                return true;
-            }
-        }
-        return false;
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Coordinates) {
+      Coordinates coord = (Coordinates) obj;
+      if (almostEqual(this.getLatitude(), coord.getLatitude(), EPSILON) &&
+        almostEqual(this.getLongitude(), coord.getLongitude(), EPSILON)) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    @Override
-    public String toString() {
-        return String.format("(%.6f, %.6f)", latitude, longitude);
-    }
+  @Override
+  public String toString() {
+    return String.format("(%.6f, %.6f)", latitude, longitude);
+  }
 }

@@ -37,7 +37,7 @@ class Demo {
 
     System.out.printf("The Lat/Long of %s is: %s\n", hash, decoded);
 
-    System.out.printf("Geohash36 neighbors:\n");
+    System.out.print("Geohash36 neighbors:\n");
 
     System.out
       .printf("%s\t", GeoHash36.getNeighbor(hash, NeighborsDir.NORTHWEST));
