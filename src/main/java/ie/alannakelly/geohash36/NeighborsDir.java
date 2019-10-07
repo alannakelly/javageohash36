@@ -19,7 +19,7 @@ public enum NeighborsDir {
 
     private final int value;
 
-    NeighborsDir(int value_) {
+    NeighborsDir(final int value_) {
         value = value_;
     }
 

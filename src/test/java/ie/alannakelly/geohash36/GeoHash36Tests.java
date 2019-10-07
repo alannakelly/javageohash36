@@ -24,6 +24,7 @@ public class GeoHash36Tests {
   @Test
   public void decode_successfullDecode_Coordinate() {
     final String geoHash36 = "bdrdC26BqH";
-    assertTrue(Coordinates.createCoordinates(51.504444,-0.086666).equals(GeoHash36.decode(geoHash36)));
+    assertTrue(Coordinates.createCoordinates(51.504444, -0.086666)
+      .equals(GeoHash36.decode(geoHash36)));
   }
 }
