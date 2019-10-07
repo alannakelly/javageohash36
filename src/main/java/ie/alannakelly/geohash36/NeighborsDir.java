@@ -6,8 +6,8 @@
  */
 package ie.alannakelly.geohash36;
 
-public enum NeighborsDir {
-    NORTHWEST(0x0505),
+public enum NeighborsDir{
+	NORTHWEST(0x0505),
     NORTH(0x0500),
     NORTHEAST(0x0501),
     WEST(0x0005),
@@ -19,11 +19,11 @@ public enum NeighborsDir {
 
     private final int value;
 
-    NeighborsDir(final int value_) {
+    NeighborsDir(final int value_){
         value = value_;
     }
 
-    public int getValue() {
+    public int getValue(){
         return value;
     }
 }
