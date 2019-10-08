@@ -7,18 +7,16 @@
 package ie.alannakelly.geohash36;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GeoHash36Tests {
   //TODO: Neighbour Tests.
 
-  @Test
-  public void encode_successfulEncode_geoHash36String() {
-    assertEquals("bdrdC26BqH", GeoHash36
-      .encode(Coordinates.createCoordinates(51.504444, -0.086666), 10));
-  }
+	@Test
+	public void encode_successfulEncode_geoHash36String(){
+		assertEquals("bdrdC26BqH", GeoHash36.encode(Coordinates.createCoordinates(51.504444, -0.086666), 10));
+	}
 
   @Test
   public void decode_successfullDecode_Coordinate() {
