@@ -12,15 +12,14 @@ public class GeoHash36 {
   private static final int GEOHASH_MATRIX_SIDE = 6;
   private static final int EARTH_RADIUS_IN_METERS = 6370000;
 
-  private static final char[] BASE_36 =
-    {
-      '2', '3', '4', '5', '6', '7',
-      '8', '9', 'b', 'B', 'C', 'd',
-      'D', 'F', 'g', 'G', 'h', 'H',
-      'j', 'J', 'K', 'l', 'L', 'M',
-      'n', 'N', 'P', 'q', 'Q', 'r',
-      'R', 't', 'T', 'V', 'W', 'X'
-    };
+  private static final char[] BASE_36 = new char[]{
+    '2', '3', '4', '5', '6', '7',
+    '8', '9', 'b', 'B', 'C', 'd',
+    'D', 'F', 'g', 'G', 'h', 'H',
+    'j', 'J', 'K', 'l', 'L', 'M',
+    'n', 'N', 'P', 'q', 'Q', 'r',
+    'R', 't', 'T', 'V', 'W', 'X'
+  };
 
   private static final byte[] BASE_36_INVERSE_HASH = new byte[]{
     (byte) 0x91, (byte) 0x15, (byte) 0xFF, (byte) 0xFF,
@@ -57,43 +56,35 @@ public class GeoHash36 {
     return output;
   }
 
-  private static Pair<Integer, Integer> charToIndexes(final char c_) {
-    int possible_index = c_ % 36;
-
+  private static Pair<Integer, Integer> charToIndexes(final char c) {
+    final int possible_index = c % 36;
     final int node_ptr = possible_index << 1;
     int value = BASE_36_INVERSE_HASH[node_ptr];
     int curr = value & 0x7f;
     final int next = value & 0x80;
-
     char temp = BASE_36[curr];
-
-    if (temp == c_) {
-      return new Pair<>(curr / GEOHASH_MATRIX_SIDE,
-        curr % GEOHASH_MATRIX_SIDE);
+    if (temp == c) {
+      return new Pair<>(curr / GEOHASH_MATRIX_SIDE, curr % GEOHASH_MATRIX_SIDE);
     } else if (next > 0) {
       value = BASE_36_INVERSE_HASH[node_ptr + 1];
       curr = (value & 0x7f);
       temp = BASE_36[curr];
-
-      if (temp == c_) {
-        return new Pair<>(curr / GEOHASH_MATRIX_SIDE,
-          curr % GEOHASH_MATRIX_SIDE);
+      if (temp == c) {
+        return new Pair<>(curr / GEOHASH_MATRIX_SIDE, curr % GEOHASH_MATRIX_SIDE);
       }
     }
-
     throw new IllegalArgumentException(
-      String.format("charToIndexes: %s not a valid GeoHash-36 character.", c_));
+      String.format("charToIndexes: %s not a valid GeoHash-36 character.", c));
   }
 
   /**
    * Encodes a given {@link Coordinates} to a GeoHash-36 {@link String}.
    *
-   * @param coordinates_ - An instance of {@link Coordinates}.
+   * @param coordinates_   - An instance of {@link Coordinates}.
    * @param numCharacters_ - The number of characters to encode (max 10).
    * @return @{@link String} containing a GeoHash-36 code.
    */
-  public static String encode(final Coordinates coordinates_,
-    int numCharacters_) {
+  public static String encode(final Coordinates coordinates_, int numCharacters_) {
     final StringBuilder outBuffer = new StringBuilder();
     final double[] lat = {-90.0, 90.0};
     final double[] lon = {-180.0, 180.0};
@@ -179,19 +170,14 @@ public class GeoHash36 {
   }
 
   /**
-   * Returns precision in meters of a given the number of characters in a
-   * GeoHash-36.
+   * Returns precision in meters of a given the number of characters in a GeoHash-36.
    *
    * @param numCharacters_ - number of characters to check precision of (max 10).
    * @return A {@link Pair} containing the latitude/longitude accuracy in meters.
    */
-  public static Pair<Double, Double> getPrecisionInMeters(
-    final int numCharacters_) {
-    final double one_grade_in_meters =
-      (2 * Math.PI * EARTH_RADIUS_IN_METERS) / 360;
-    final double latPrec =
-      (90 / (double) fastPow(numCharacters_))
-        * one_grade_in_meters;
+  public static Pair<Double, Double> getPrecisionInMeters(final int numCharacters_) {
+    final double one_grade_in_meters = (2 * Math.PI * EARTH_RADIUS_IN_METERS) / 360;
+    final double latPrec = (90 / (double) fastPow(numCharacters_)) * one_grade_in_meters;
     return new Pair<>(latPrec, latPrec * 2);
   }
 
@@ -202,21 +188,13 @@ public class GeoHash36 {
    * @param direction - A {@link NeighborsDir}.
    * @return A {@link String} containing the GeoHash-36 in the given direction.
    */
-  public static String getNeighbor(final String geoHash36,
-    final NeighborsDir direction) {
-
-    final Pair<Integer, Integer> latLong = charToIndexes(
-      geoHash36.charAt(geoHash36.length() - 1));
-
+  public static String getNeighbor(final String geoHash36, final NeighborsDir direction) {
+    final Pair<Integer, Integer> latLong = charToIndexes(geoHash36.charAt(geoHash36.length() - 1));
     final byte lat_diff = (byte) (direction.getValue() >> 8);
     final byte long_diff = (byte) direction.getValue();
-
-    final int latLine =
-      (latLong.a.byteValue() + lat_diff) % GEOHASH_MATRIX_SIDE;
-    final int longCol =
-      (latLong.b.byteValue() + long_diff) % GEOHASH_MATRIX_SIDE;
-
-    return geoHash36.substring(0, geoHash36.length() - 1)
-      + BASE_36[(latLine * GEOHASH_MATRIX_SIDE) + longCol];
+    final int latLine = (latLong.a.byteValue() + lat_diff) % GEOHASH_MATRIX_SIDE;
+    final int longCol = (latLong.b.byteValue() + long_diff) % GEOHASH_MATRIX_SIDE;
+    return geoHash36.substring(0, geoHash36.length() - 1) + BASE_36[(latLine * GEOHASH_MATRIX_SIDE)
+      + longCol];
   }
 }
