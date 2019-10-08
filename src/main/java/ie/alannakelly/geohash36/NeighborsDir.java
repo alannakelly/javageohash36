@@ -10,23 +10,23 @@ package ie.alannakelly.geohash36;
  * Used to calculate adjacent locations from a given GeoHash-36
  */
 public enum NeighborsDir {
-    NORTHWEST(0x0505),
-    NORTH(0x0500),
-    NORTHEAST(0x0501),
-    WEST(0x0005),
-    CENTER(0x0000),
-    EAST(0x0001),
-    SOUTHWEST(0x0105),
-    SOUTH(0x0100),
-    SOUTHEAST(0x0101);
+  NORTHWEST(0x0505),
+  NORTH(0x0500),
+  NORTHEAST(0x0501),
+  WEST(0x0005),
+  CENTER(0x0000),
+  EAST(0x0001),
+  SOUTHWEST(0x0105),
+  SOUTH(0x0100),
+  SOUTHEAST(0x0101);
 
-    private final int value;
+  private final int value;
 
-    NeighborsDir(final int value_) {
-        value = value_;
-    }
+  NeighborsDir(final int value_) {
+    value = value_;
+  }
 
-    public int getValue() {
-        return value;
-    }
+  public int getValue() {
+    return value;
+  }
 }
