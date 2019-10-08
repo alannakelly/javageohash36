@@ -4,6 +4,7 @@
  * This work is licensed under the terms of the MIT license.
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
+
 package ie.alannakelly.geohash36;
 
 /**
@@ -20,11 +21,11 @@ class Demo {
 
     Coordinates coordinates = Coordinates.createCoordinates(latitude, longitude);
     Pair<Double, Double> precision = GeoHash36
-      .getPrecisionInMeters(GeoHash36.DEFAULT_NUM_CHARACTERS);
+        .getPrecisionInMeters(GeoHash36.DEFAULT_NUM_CHARACTERS);
 
     System.out
-      .printf("Using %d characters for Geohash-36, our precision is %f x %f square meters\n",
-        GeoHash36.DEFAULT_NUM_CHARACTERS, precision.a, precision.b);
+        .printf("Using %d characters for Geohash-36, our precision is %f x %f square meters\n",
+            GeoHash36.DEFAULT_NUM_CHARACTERS, precision.aa, precision.bb);
 
     String hash = GeoHash36.encode(coordinates, GeoHash36.DEFAULT_NUM_CHARACTERS);
 

@@ -4,6 +4,7 @@
  * This work is licensed under the terms of the MIT license.
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
+
 package ie.alannakelly.geohash36;
 
 /**
@@ -21,8 +22,8 @@ public class Coordinates {
   /**
    * Double comparison utility method. Based on information at https://floating-point-gui.de/errors/comparison/
    *
-   * @param a       - first double
-   * @param b       - second double
+   * @param a - first double
+   * @param b - second double
    * @return true if a & b are equal or almost equal.
    */
   private static boolean almostEqual(final double a, final double b) {
@@ -48,16 +49,16 @@ public class Coordinates {
    * @throws IllegalArgumentException if latitude or longitude are out of range.
    */
   public static Coordinates createCoordinates(final double latitude, final double longitude) {
-    if ((latitude < -90.0 && latitude > 90.0) ||
-      (longitude < -180.0 && latitude > 180.0)) {
+    if ((latitude < -90.0 && latitude > 90.0)
+        || (longitude < -180.0 && latitude > 180.0)) {
       throw new IllegalArgumentException("Invalid latitude or longitude.");
     }
     return new Coordinates(latitude, longitude);
   }
 
-  private Coordinates(final double latitude_, final double longitude_) {
-    latitude = latitude_;
-    longitude = longitude_;
+  private Coordinates(final double latitude, final double longitude) {
+    this.latitude = latitude;
+    this.longitude = longitude;
   }
 
   public double getLatitude() {
@@ -71,9 +72,9 @@ public class Coordinates {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Coordinates) {
-      Coordinates coord = (Coordinates) obj;
-      return almostEqual(this.getLatitude(), coord.getLatitude()) &&
-        almostEqual(this.getLongitude(), coord.getLongitude());
+      Coordinates coords = (Coordinates) obj;
+      return almostEqual(this.getLatitude(), coords.getLatitude())
+          && almostEqual(this.getLongitude(), coords.getLongitude());
     }
     return false;
   }

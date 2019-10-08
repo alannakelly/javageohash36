@@ -7,6 +7,7 @@
 
 plugins {
     id 'java'
+    id 'checkstyle'
 }
 
 sourceCompatibility = '1.8'
@@ -14,9 +15,10 @@ targetCompatibility = '1.8'
 version = '0.0.1'
 
 apply plugin: 'java'
+apply plugin: 'checkstyle'
 
 repositories {
-    mavenCentral();
+    mavenCentral()
 }
 
 dependencies {
@@ -31,4 +33,16 @@ test {
 
 jar {
     exclude 'ie/alannakelly/geohash36/Demo.class'
+}
+
+checkstyle {
+    toolVersion = '8.25'
+}
+
+checkstyleMain {
+    source = fileTree('./src/main')
+}
+
+checkstyleTest {
+    source = fileTree('.src/test')
 }
