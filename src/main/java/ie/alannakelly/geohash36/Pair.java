@@ -6,6 +6,12 @@
  */
 package ie.alannakelly.geohash36;
 
+/**
+ * Simple immutable Pair Class. Used to return two values from a method.
+ *
+ * @param <A>
+ * @param <B>
+ */
 public class Pair<A,B> {
   public final A a;
   public final B b;

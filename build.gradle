@@ -30,4 +30,5 @@ test {
 }
 
 jar {
+    exclude 'ie/alannakelly/geohash36/Demo.class'
 }

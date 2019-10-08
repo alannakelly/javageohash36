@@ -6,6 +6,9 @@
  */
 package ie.alannakelly.geohash36;
 
+/**
+ * Used to calculate adjacent locations from a given GeoHash-36
+ */
 public enum NeighborsDir {
     NORTHWEST(0x0505),
     NORTH(0x0500),
