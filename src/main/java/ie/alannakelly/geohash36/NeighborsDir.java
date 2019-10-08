@@ -4,10 +4,11 @@
  * This work is licensed under the terms of the MIT license.
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
+
 package ie.alannakelly.geohash36;
 
 /**
- * Used to calculate adjacent locations from a given GeoHash-36
+ * Used to calculate adjacent locations from a given GeoHash-36.
  */
 public enum NeighborsDir {
   NORTHWEST(0x0505),
@@ -22,8 +23,8 @@ public enum NeighborsDir {
 
   private final int value;
 
-  NeighborsDir(final int value_) {
-    value = value_;
+  NeighborsDir(final int value) {
+    this.value = value;
   }
 
   public int getValue() {

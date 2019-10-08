@@ -4,6 +4,7 @@
  * This work is licensed under the terms of the MIT license.
  * For a copy, see <https://opensource.org/licenses/MIT>.
  */
+
 package ie.alannakelly.geohash36;
 
 public class GeoHash36 {
@@ -13,44 +14,44 @@ public class GeoHash36 {
   private static final int EARTH_RADIUS_IN_METERS = 6370000;
 
   private static final char[] BASE_36 = new char[]{
-    '2', '3', '4', '5', '6', '7',
-    '8', '9', 'b', 'B', 'C', 'd',
-    'D', 'F', 'g', 'G', 'h', 'H',
-    'j', 'J', 'K', 'l', 'L', 'M',
-    'n', 'N', 'P', 'q', 'Q', 'r',
-    'R', 't', 'T', 'V', 'W', 'X'
+      '2', '3', '4', '5', '6', '7',
+      '8', '9', 'b', 'B', 'C', 'd',
+      'D', 'F', 'g', 'G', 'h', 'H',
+      'j', 'J', 'K', 'l', 'L', 'M',
+      'n', 'N', 'P', 'q', 'Q', 'r',
+      'R', 't', 'T', 'V', 'W', 'X'
   };
 
   private static final byte[] BASE_36_INVERSE_HASH = new byte[]{
-    (byte) 0x91, (byte) 0x15, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x93, (byte) 0x18, (byte) 0x14, (byte) 0x00,
-    (byte) 0x16, (byte) 0x00, (byte) 0x97, (byte) 0x1B,
-    (byte) 0x99, (byte) 0x1D, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x9A, (byte) 0x1F, (byte) 0x1C, (byte) 0x00,
-    (byte) 0x1E, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x20, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x80, (byte) 0x21, (byte) 0x81, (byte) 0x22,
-    (byte) 0x82, (byte) 0x23, (byte) 0x03, (byte) 0x00,
-    (byte) 0x04, (byte) 0x00, (byte) 0x05, (byte) 0x00,
-    (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00,
-    (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x08, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x0B, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x09, (byte) 0x00, (byte) 0x8A, (byte) 0x0E,
-    (byte) 0x8C, (byte) 0x10, (byte) 0xFF, (byte) 0xFF,
-    (byte) 0x8D, (byte) 0x12, (byte) 0x0F, (byte) 0x00
+      (byte) 0x91, (byte) 0x15, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x93, (byte) 0x18, (byte) 0x14, (byte) 0x00,
+      (byte) 0x16, (byte) 0x00, (byte) 0x97, (byte) 0x1B,
+      (byte) 0x99, (byte) 0x1D, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x9A, (byte) 0x1F, (byte) 0x1C, (byte) 0x00,
+      (byte) 0x1E, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x20, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x80, (byte) 0x21, (byte) 0x81, (byte) 0x22,
+      (byte) 0x82, (byte) 0x23, (byte) 0x03, (byte) 0x00,
+      (byte) 0x04, (byte) 0x00, (byte) 0x05, (byte) 0x00,
+      (byte) 0x06, (byte) 0x00, (byte) 0x07, (byte) 0x00,
+      (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x08, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x0B, (byte) 0x00, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x09, (byte) 0x00, (byte) 0x8A, (byte) 0x0E,
+      (byte) 0x8C, (byte) 0x10, (byte) 0xFF, (byte) 0xFF,
+      (byte) 0x8D, (byte) 0x12, (byte) 0x0F, (byte) 0x00
   };
 
-  private static int fastPow(int exp_) {
-    if (exp_ == 0) {
+  private static int fastPow(int exp) {
+    if (exp == 0) {
       return 1;
     }
 
     int output = 1;
-    while (exp_ > 0) {
+    while (exp > 0) {
       output *= GeoHash36.GEOHASH_MATRIX_SIDE;
-      exp_--;
+      exp--;
     }
 
     return output;
@@ -74,32 +75,33 @@ public class GeoHash36 {
       }
     }
     throw new IllegalArgumentException(
-      String.format("charToIndexes: %s not a valid GeoHash-36 character.", c));
+        String.format("charToIndexes: %s not a valid GeoHash-36 character.", c));
   }
 
   /**
    * Encodes a given {@link Coordinates} to a GeoHash-36 {@link String}.
    *
-   * @param coordinates_   - An instance of {@link Coordinates}.
-   * @param numCharacters_ - The number of characters to encode (max 10).
+   * @param coordinates   - An instance of {@link Coordinates}.
+   * @param numCharacters - The number of characters to encode (max 10).
    * @return @{@link String} containing a GeoHash-36 code.
    */
-  public static String encode(final Coordinates coordinates_, int numCharacters_) {
+  public static String encode(final Coordinates coordinates, int numCharacters) {
     final StringBuilder outBuffer = new StringBuilder();
     final double[] lat = {-90.0, 90.0};
     final double[] lon = {-180.0, 180.0};
 
-    while (numCharacters_ > 0) {
+    while (numCharacters > 0) {
       double slice = lon[0] - lon[1];
-      int latIdx = 0, longIdx = 0;
+      int latIdx = 0;
+      int longIdx = 0;
       slice = Math.abs(slice) / (double) GEOHASH_MATRIX_SIDE;
 
       for (int i = 0; i < GEOHASH_MATRIX_SIDE; i++) {
         final double leftBoundary = (lon[0] + (i * slice));
         final double rightBoundary = (lon[0] + ((i + 1) * slice));
 
-        if ((coordinates_.getLongitude() > leftBoundary) && (
-          coordinates_.getLongitude() <= rightBoundary)) {
+        if ((coordinates.getLongitude() > leftBoundary) && (
+            coordinates.getLongitude() <= rightBoundary)) {
           longIdx = i;
           lon[0] = leftBoundary;
           lon[1] = rightBoundary;
@@ -114,8 +116,8 @@ public class GeoHash36 {
         final double leftBoundary = (lat[0] + (i * slice));
         final double rightBoundary = (lat[0] + ((i + 1) * slice));
 
-        if ((coordinates_.getLatitude() > leftBoundary) && (
-          coordinates_.getLatitude() <= rightBoundary)) {
+        if ((coordinates.getLatitude() > leftBoundary) && (
+            coordinates.getLatitude() <= rightBoundary)) {
           latIdx = GEOHASH_MATRIX_SIDE - 1 - i;
           lat[0] = leftBoundary;
           lat[1] = rightBoundary;
@@ -124,7 +126,7 @@ public class GeoHash36 {
       }
 
       outBuffer.append(BASE_36[(latIdx * GEOHASH_MATRIX_SIDE) + longIdx]);
-      numCharacters_--;
+      numCharacters--;
     }
 
     return outBuffer.toString();
@@ -133,20 +135,20 @@ public class GeoHash36 {
   /**
    * Decodes a {@link String} containing a GeoHash-36.
    *
-   * @param buffer_ - A string containing a GeoHash-36.
-   * @return An instance of {@link Coordinates} decoded from buffer_.
+   * @param geoHash36 - A string containing a GeoHash-36.
+   * @return An instance of {@link Coordinates} decoded from geoHash36.
    */
-  public static Coordinates decode(final String buffer_) {
+  public static Coordinates decode(final String geoHash36) {
     //bdrdC26BqH   ~~>   (51.504444, -0.086666)
 
     double[] lat = {-90.0, 90.0};
     double[] lon = {-180.0, 180.0};
     double slice;
 
-    for (int i = 0; i < buffer_.length(); i++) {
-      Pair<Integer, Integer> indexes = charToIndexes(buffer_.charAt(i));
-      int latLine = indexes.a;
-      int longCol = indexes.b;
+    for (int i = 0; i < geoHash36.length(); i++) {
+      Pair<Integer, Integer> indexes = charToIndexes(geoHash36.charAt(i));
+      int latLine = indexes.aa;
+      final int longCol = indexes.bb;
 
       if (latLine == -1) {
         return null;
@@ -166,23 +168,23 @@ public class GeoHash36 {
     }
 
     return Coordinates
-      .createCoordinates((lat[1] + lat[0]) / 2, (lon[1] + lon[0]) / 2);
+        .createCoordinates((lat[1] + lat[0]) / 2, (lon[1] + lon[0]) / 2);
   }
 
   /**
    * Returns precision in meters of a given the number of characters in a GeoHash-36.
    *
-   * @param numCharacters_ - number of characters to check precision of (max 10).
+   * @param numCharacters - number of characters to check precision of (max 10).
    * @return A {@link Pair} containing the latitude/longitude accuracy in meters.
    */
-  public static Pair<Double, Double> getPrecisionInMeters(final int numCharacters_) {
+  public static Pair<Double, Double> getPrecisionInMeters(final int numCharacters) {
     final double one_grade_in_meters = (2 * Math.PI * EARTH_RADIUS_IN_METERS) / 360;
-    final double latPrec = (90 / (double) fastPow(numCharacters_)) * one_grade_in_meters;
+    final double latPrec = (90 / (double) fastPow(numCharacters)) * one_grade_in_meters;
     return new Pair<>(latPrec, latPrec * 2);
   }
 
   /**
-   * Gets the neighbouring GeoHash-36 given a GeoHash-36 and a NeighborsDir
+   * Gets the neighbouring GeoHash-36 given a GeoHash-36 and a NeighborsDir.
    *
    * @param geoHash36 - A {@link String} containing a GeoHash-36.
    * @param direction - A {@link NeighborsDir}.
@@ -192,9 +194,9 @@ public class GeoHash36 {
     final Pair<Integer, Integer> latLong = charToIndexes(geoHash36.charAt(geoHash36.length() - 1));
     final byte lat_diff = (byte) (direction.getValue() >> 8);
     final byte long_diff = (byte) direction.getValue();
-    final int latLine = (latLong.a.byteValue() + lat_diff) % GEOHASH_MATRIX_SIDE;
-    final int longCol = (latLong.b.byteValue() + long_diff) % GEOHASH_MATRIX_SIDE;
+    final int latLine = (latLong.aa.byteValue() + lat_diff) % GEOHASH_MATRIX_SIDE;
+    final int longCol = (latLong.bb.byteValue() + long_diff) % GEOHASH_MATRIX_SIDE;
     return geoHash36.substring(0, geoHash36.length() - 1) + BASE_36[(latLine * GEOHASH_MATRIX_SIDE)
-      + longCol];
+        + longCol];
   }
 }
